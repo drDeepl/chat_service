@@ -60,7 +60,7 @@ export class AuthService {
         id: userId,
       },
       data: {
-        refreshTokenHash: hashData,
+        refrash_hash: hashData,
       },
     });
   }
@@ -69,7 +69,14 @@ export class AuthService {
     this.logger.verbose('signUp');
     const hashData = await this.hashData(dto.password);
     const newUser = await this.prisma.user.create({
-      data: { username: dto.username, passwordHash: hashData, role: 'user' },
+      data: {
+        username: dto.username,
+        passwordHash: hashData,
+        role: 'user',
+        profile_photo_id: dto.profile_photo_id,
+        sex: dto.sex,
+        dateBirthday: dto.dateBirthday,
+      },
     });
     const tokens = await this.getTokens(newUser.id, newUser.username);
     this.updateHashRefreshToken(newUser.id, tokens.refresh_token);
@@ -105,7 +112,7 @@ export class AuthService {
         id: userId,
       },
       data: {
-        refreshTokenHash: null,
+        refrash_hash: null,
       },
     });
   }
@@ -123,13 +130,13 @@ export class AuthService {
       throw new ForbiddenException('Access Denided');
     }
 
-    if (!user.refreshTokenHash) {
+    if (!user.refrash_hash) {
       throw new ForbiddenException('Refresh token is empty');
     }
 
     const comparedRefreshToken = await bcrypt.compare(
       refreshToken,
-      user.refreshTokenHash,
+      user.refrash_hash,
     );
     if (!comparedRefreshToken) {
       throw new ForbiddenException('Access Denied');

@@ -23,7 +23,8 @@ import {
 } from '@nestjs/swagger';
 
 import { UsersService } from './users.service';
-import { User } from './entites/user.entity';
+import { UserEntity } from './entites/user.entity';
+import { User } from './types';
 import { AuthGuard } from '@nestjs/passport';
 import { Role } from '@prisma/client';
 import { RoleDto } from './dto/role.dto';
@@ -39,7 +40,11 @@ export class UsersController {
 
   @Get()
   @ApiOperation({ summary: 'get all users' })
-  @ApiResponse({ status: HttpStatus.OK, description: 'Success', type: [User] })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Success',
+    type: [UserEntity],
+  })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: 'Unauthorized' })
   findAll(): Promise<User[]> {
@@ -49,7 +54,11 @@ export class UsersController {
 
   @Get('user/:userId')
   @ApiOperation({ summary: 'get user by id' })
-  @ApiResponse({ status: HttpStatus.OK, description: 'Success', type: User })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Success',
+    type: UserEntity,
+  })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: 'Unauthorized' })
   @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not found user' })
@@ -62,7 +71,11 @@ export class UsersController {
 
   @Delete('user/:userId')
   @ApiOperation({ summary: 'get user by id' })
-  @ApiResponse({ status: HttpStatus.OK, description: 'Success', type: User })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Success',
+    type: UserEntity,
+  })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: 'Unauthorized' })
   @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not found user' })

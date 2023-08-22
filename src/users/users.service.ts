@@ -1,6 +1,7 @@
 import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable, Logger, HttpStatus, HttpException } from '@nestjs/common';
-import { User } from './entites/user.entity';
+// import { User } from './entites/user.entity';
+import { User } from './types';
 import { Role } from './types';
 
 @Injectable()

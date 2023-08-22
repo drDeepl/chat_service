@@ -9,3 +9,45 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User{
+   id Int @id @default(autoincrement())
+   username String @db.VarChar(32) @unique
+   role String @db.VarChar(16) @default("user")
+   profile_photo_id Int @db.Integer()
+   sex String?
+   createdAt DateTime @default(now())
+   passwordHash String @db.VarChar(255)
+   refrash_hash String? @db.VarChar(255)
+   dateBirthday DateTime @db.Date()
+   messages_from_user Message[]
+   photos_user Photo_Profile[]
+   
+}
+
+model Message{
+  id Int @id @default(autoincrement())
+  from_user_id Int @db.Integer()
+  to_user_id Int @db.Integer()
+  from_user User @relation(fields: [from_user_id], references: [id])
+  message_text String @db.Text()
+  send_datetime DateTime @db.Timestamptz()
+  is_read Boolean @db.Boolean() @default(false)
+}
+
+model Photo_Profile{
+  id Int @id @default(autoincrement())
+  user_id Int
+  path_photo String @db.VarChar(255)
+  user User @relation(fields: [user_id], references: [id])
+}
+
+model Interests_User{
+    id Int @id @default(autoincrement())
+    name String @db.VarChar(32)
+}
+
+model Role{
+  id Int @id @default(autoincrement())
+  role String @db.VarChar(16)
+}

@@ -79,8 +79,9 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   refresh(@Req() req: Request) {
     this.logger.verbose('refresh');
-    const user = req.user;
-    return this.authService.refreshTokens(user['sub'], user['refreshToken']);
+    console.log(req);
+    // const user = req.user;
+    // return this.authService.refreshTokens(user['sub'], user['refreshToken']);
   }
 
   @ApiOperation({ summary: 'response to clear refreshTokenHash' })
@@ -95,7 +96,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   logout(@Req() req: Request) {
     this.logger.verbose('logout');
-    const user = req.user;
-    this.authService.logout(user['sub']);
+    // const user = req.user;
+    // this.authService.logout(user['sub']);
   }
 }

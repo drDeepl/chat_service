@@ -1,10 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UserDto {
-  @ApiProperty({ description: 'Users username', nullable: false })
+  @ApiProperty({ nullable: false })
   username: string;
-  @ApiProperty({ description: 'User data of register', nullable: false })
-  datetimeRegister: string;
-  @ApiProperty({ description: 'Users role', nullable: false })
+  @ApiProperty({ nullable: false })
   role: string;
+  @ApiProperty({ nullable: false })
+  profile_photo_id: number;
+  @ApiProperty({ nullable: false })
+  sex: string;
+  @ApiProperty({ nullable: false })
+  createdAt: number;
+  @ApiProperty({ nullable: false })
+  dateBirthday: number;
 }

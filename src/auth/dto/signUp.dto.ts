@@ -10,4 +10,16 @@ export class SignUpDto {
   @IsNotEmpty()
   @IsString()
   password: string;
+  @ApiProperty({ nullable: false })
+  @IsNotEmpty()
+  @IsString()
+  sex: string;
+  @ApiProperty({ nullable: false })
+  @IsNotEmpty()
+  @IsString()
+  dateBirthday: Date;
+  @ApiProperty({ nullable: false })
+  @IsNotEmpty()
+  @IsString()
+  profile_photo_id: number;
 }
