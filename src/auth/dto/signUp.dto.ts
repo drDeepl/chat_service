@@ -19,7 +19,5 @@ export class SignUpDto {
   @IsString()
   dateBirthday: Date;
   @ApiProperty({ nullable: false })
-  @IsNotEmpty()
-  @IsString()
   profile_photo_id: number;
 }

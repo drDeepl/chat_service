@@ -22,7 +22,7 @@ import {
   ApiSecurity,
   ApiTags,
 } from '@nestjs/swagger';
-import { Request } from 'express';
+import { IRequestWithUser } from './interfaces/IReqestWithUser';
 import { AuthService } from './auth.service';
 import { SignInDto } from './dto/signIn.dto';
 import { SignUpDto } from './dto/signUp.dto';
@@ -77,11 +77,10 @@ export class AuthController {
   @UseGuards(AuthGuard('jwt-refresh'))
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
-  refresh(@Req() req: Request) {
+  refresh(@Req() req: IRequestWithUser) {
     this.logger.verbose('refresh');
-    console.log(req);
-    // const user = req.user;
-    // return this.authService.refreshTokens(user['sub'], user['refreshToken']);
+    const user = req.user;
+    return this.authService.refreshTokens(user['sub'], user['refreshToken']);
   }
 
   @ApiOperation({ summary: 'response to clear refreshTokenHash' })
@@ -94,9 +93,9 @@ export class AuthController {
   @UseGuards(AuthGuard('jwt'))
   @Post('logout')
   @HttpCode(HttpStatus.OK)
-  logout(@Req() req: Request) {
+  logout(@Req() req: IRequestWithUser) {
     this.logger.verbose('logout');
-    // const user = req.user;
-    // this.authService.logout(user['sub']);
+    const user = req.user;
+    this.authService.logout(user['sub']);
   }
 }

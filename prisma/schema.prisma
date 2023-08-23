@@ -31,7 +31,7 @@ model Message{
   to_user_id Int @db.Integer()
   from_user User @relation(fields: [from_user_id], references: [id])
   message_text String @db.Text()
-  send_datetime DateTime @db.Timestamptz()
+  send_datetime DateTime @db.Timestamptz() @default(now())
   is_read Boolean @db.Boolean() @default(false)
 }
 

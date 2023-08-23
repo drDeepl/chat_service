@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Message" ALTER COLUMN "send_datetime" SET DEFAULT CURRENT_TIMESTAMP;
