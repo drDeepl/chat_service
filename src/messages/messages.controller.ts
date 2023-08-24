@@ -7,6 +7,8 @@ import {
   UseGuards,
   Req,
   Logger,
+  Get,
+  Res,
 } from '@nestjs/common';
 
 import {
@@ -19,7 +21,7 @@ import {
 } from '@nestjs/swagger';
 
 import { MessagesService } from './messages.service';
-import { MessageSendDto } from './dto/message-send.dto';
+import { MessageCreateDto } from './dto/message-send.dto';
 @ApiTags('messages')
 @Controller('messages')
 export class MessagesController {
@@ -27,17 +29,17 @@ export class MessagesController {
   constructor(private readonly msgService: MessagesService) {}
 
   @HttpCode(HttpStatus.OK)
-  @Post('signin')
+  @Post('create')
   @ApiOperation({ summary: 'response to validate data for sign in' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Success',
-    type: MessageSendDto,
+    type: MessageCreateDto,
   })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: 'Unauthorized' })
-  sendMsg(@Body() dto: MessageSendDto) {
+  createMessage(@Body() dto: MessageCreateDto) {
     this.logger.verbose('sendMsg');
-    this.msgService.msgSend(dto.from, dto.to, dto.text);
+    this.msgService.createMessage(dto.from, dto.to, dto.text);
   }
 }

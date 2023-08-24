@@ -1,4 +1,4 @@
-export class MessageCreateDto {
+export class ChatEntity {
   from: number;
   to: number;
   text: string;
