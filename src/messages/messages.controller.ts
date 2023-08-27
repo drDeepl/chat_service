@@ -9,6 +9,7 @@ import {
   Logger,
   Get,
   Res,
+  Param,
 } from '@nestjs/common';
 
 import {
@@ -41,5 +42,20 @@ export class MessagesController {
   createMessage(@Body() dto: MessageCreateDto) {
     this.logger.verbose('sendMsg');
     this.msgService.createMessage(dto.from, dto.to, dto.text);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Get(':from/:to')
+  @ApiOperation({ summary: 'response to validate data for sign in' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Success',
+    type: MessageCreateDto,
+  })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
+  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: 'Unauthorized' })
+  getMsgFromTo(@Param() params: any) {
+    this.logger.verbose('sendMsg');
+    this.msgService.getMsgFromTo(+params.from, +params.to);
   }
 }

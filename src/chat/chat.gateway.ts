@@ -30,9 +30,10 @@ export class ChatGateway
 
   @SubscribeMessage('newMessage')
   async handleSendMessage(client: Socket, payload: any): Promise<void> {
-    // await this.msgService.createMessage(payload.from, payload.to, payload.text);
-    console.log(Object.keys(client));
-    this.server.emit('recMessage', payload);
+    await this.msgService.createMessage(payload.from, payload.to, payload.text);
+    console.log(payload);
+    this.server.emit(payload.from, payload);
+    this.server.emit(payload.to, payload);
   }
 
   onModuleInit() {
@@ -54,6 +55,7 @@ export class ChatGateway
 
   handleConnection(client: Socket, ...args: any[]) {
     console.log(`Connected ${client.id}`);
+
     //Do stuffs
   }
 }

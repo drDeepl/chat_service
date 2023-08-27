@@ -18,4 +18,21 @@ export class MessagesService {
     this.logger.debug('getMessages');
     return await this.prisma.message.findMany();
   }
+  async getMsgFromTo(from: number, to: number) {
+    this.logger.debug('getMsgFromTo');
+    return await this.prisma.message.findMany({
+      where: {
+        from_user_id: from,
+        to_user_id: to,
+      },
+    });
+  }
+
+  async getUserDialogs(from: number) {
+    this.logger.debug('getUserDialogs');
+    await this.prisma.message.findMany({
+      select: { to_user_id: true },
+      where: { from_user_id: from },
+    });
+  }
 }

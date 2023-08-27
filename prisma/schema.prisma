@@ -19,7 +19,7 @@ model User{
    createdAt DateTime @default(now())
    passwordHash String @db.VarChar(255)
    refrash_hash String? @db.VarChar(255)
-   dateBirthday DateTime @db.Date()
+   dateBirthday DateTime? @db.Date()
    messages_from_user Message[]
    photos_user Photo_Profile[]
    
