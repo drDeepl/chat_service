@@ -40,7 +40,7 @@ export class MessagesController {
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: 'Unauthorized' })
   createMessage(@Body() dto: MessageCreateDto) {
-    this.logger.verbose('sendMsg');
+    this.logger.debug('sendMsg');
     this.msgService.createMessage(dto.from, dto.to, dto.text);
   }
 
@@ -55,7 +55,22 @@ export class MessagesController {
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: 'Unauthorized' })
   getMsgFromTo(@Param() params: any) {
-    this.logger.verbose('sendMsg');
+    this.logger.debug('getMsgFromTo');
     this.msgService.getMsgFromTo(+params.from, +params.to);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Post('send')
+  @ApiOperation({ summary: 'response to validate data for sign in' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Success',
+    type: MessageCreateDto,
+  })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad Request' })
+  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: 'Unauthorized' })
+  sendMsg(@Body('from') dto: MessageCreateDto) {
+    this.logger.debug('sendMsg');
+    this.msgService.sendMsg(+dto.from, +dto.to, dto.text);
   }
 }

@@ -35,4 +35,10 @@ export class MessagesService {
       where: { from_user_id: from },
     });
   }
+  async sendMsg(from: number, to: number, text: string) {
+    this.logger.debug('sendMsg');
+    return this.prisma.message.create({
+      data: { from_user_id: from, to_user_id: to, message_text: text },
+    });
+  }
 }

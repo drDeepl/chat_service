@@ -52,7 +52,7 @@ export class AuthService {
   }
 
   async updateHashRefreshToken(userId: number, refreshToken: string) {
-    this.logger.verbose('updateRefreshToken');
+    this.logger.debug('updateRefreshToken');
     const hashData: string = await this.hashData(refreshToken);
 
     await this.prisma.user.update({
@@ -66,25 +66,37 @@ export class AuthService {
   }
 
   async signUp(dto: SignUpDto): Promise<Tokens> {
-    this.logger.verbose('signUp');
+    this.logger.debug('signUp');
     const hashData = await this.hashData(dto.password);
-    const newUser = await this.prisma.user.create({
-      data: {
-        username: dto.username,
-        passwordHash: hashData,
-        role: 'user',
-        profile_photo_id: dto.profile_photo_id,
-        sex: dto.sex,
-        dateBirthday: dto.dateBirthday,
-      },
-    });
-    const tokens = await this.getTokens(newUser.id, newUser.username);
-    this.updateHashRefreshToken(newUser.id, tokens.refresh_token);
-    return tokens;
+
+    try {
+      const newUser = await this.prisma.user.create({
+        data: {
+          username: dto.username,
+          passwordHash: hashData,
+          role: 'user',
+          profile_photo_id: dto.profile_photo_id,
+          sex: dto.sex,
+          dateBirthday: dto.dateBirthday,
+        },
+      });
+      const tokens = await this.getTokens(newUser.id, newUser.username);
+      this.updateHashRefreshToken(newUser.id, tokens.refresh_token);
+      return tokens;
+    } catch (e) {
+      if (e.code == 'P2002') {
+        throw new ForbiddenException(
+          'Пользователь с таким именем уже существует',
+        );
+      } else {
+        console.log(e);
+        throw new ForbiddenException('что-то пошло не так');
+      }
+    }
   }
 
   async signIn(dto: SignInDto): Promise<Tokens> {
-    this.logger.verbose('signIn');
+    this.logger.debug('signIn');
     const user = await this.prisma.user.findUnique({
       where: {
         username: dto.username,
@@ -106,7 +118,7 @@ export class AuthService {
   }
 
   async logout(userId: number) {
-    this.logger.verbose('logout');
+    this.logger.debug('logout');
     await this.prisma.user.update({
       where: {
         id: userId,
@@ -118,7 +130,7 @@ export class AuthService {
   }
 
   async refreshTokens(userId: number, refreshToken: string): Promise<Tokens> {
-    this.logger.verbose('refreshTokens');
+    this.logger.debug('refreshTokens');
 
     const user = await this.prisma.user.findUnique({
       where: {

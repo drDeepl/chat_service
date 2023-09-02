@@ -22,6 +22,7 @@ model User{
    dateBirthday DateTime? @db.Date()
    messages_from_user Message[]
    photos_user Photo_Profile[]
+   members_room MembersRoom[]
    
 }
 
@@ -35,16 +36,27 @@ model Message{
   is_read Boolean @db.Boolean() @default(false)
 }
 
+model Room{
+  id Int @id @default(autoincrement())
+  title String @db.VarChar(128)
+  members_room MembersRoom[]
+}
+
+model MembersRoom{
+  id Int @id @default(autoincrement())
+  room_id Int @db.Integer()
+  user_id Int @db.Integer()
+  room Room @relation(fields: [room_id], references: [id])
+  user User @relation(fields: [user_id], references: [id])
+}
+
+
+
 model Photo_Profile{
   id Int @id @default(autoincrement())
   user_id Int
   path_photo String @db.VarChar(255)
   user User @relation(fields: [user_id], references: [id])
-}
-
-model Interests_User{
-    id Int @id @default(autoincrement())
-    name String @db.VarChar(32)
 }
 
 model Role{

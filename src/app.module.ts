@@ -8,6 +8,7 @@ import { PhotoProfileModule } from './photo-profile/photo-profile.module';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
 import { ChatModule } from './chat/chat.module';
+import { RoomsModule } from './rooms/rooms.module';
 @Module({
   imports: [
     ChatModule,
@@ -21,6 +22,7 @@ import { ChatModule } from './chat/chat.module';
       cache: true,
     }),
     PrismaModule,
+    RoomsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
